@@ -18,3 +18,5 @@ class ProductPage(BasePage):
         productName = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME_TAG).text
 
         assert nameInAlert==productName, "product name != name in alert"
+
+    

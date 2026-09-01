@@ -11,3 +11,6 @@ class ProductPageLocators():
     PRODUCT_NAME_TAG = (By.CSS_SELECTOR, "div h1")
     CART_SUM = (By.CSS_SELECTOR, ".alert-safe:nth-child(3) strong")
     PRODUCT_PRICE_TAG = (By.CSS_SELECTOR, "div.row div.product_main .price_color")
+class BasePageLocators():
+    LOGIN_LINK = (By.CSS_SELECTOR, "#login_link")
+    LOGIN_LINK_INVALID = (By.CSS_SELECTOR, "#login_link_inc")
