@@ -1,7 +1,8 @@
-from selenium.webdriver.common.by import By
 from .pages.product_page import ProductPage
-import pytest
 from .pages.locators import ProductPageLocators
+from .pages.login_page import LoginPage
+import pytest
+import time
 
 @pytest.mark.skip
 @pytest.mark.parametrize('link', ["http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0",
@@ -53,3 +54,25 @@ def test_guest_can_go_to_login_page_from_product_page(browser):
     page = ProductPage(browser, link)
     page.open()
     page.go_to_login_page()
+@pytest.mark.user_product_page
+class TestUserAddToBasketFromProductPage():
+     @pytest.fixture(scope="function", autouse=True)
+     def setup(self, browser):
+          page=LoginPage(browser, "http://selenium1py.pythonanywhere.com/ru/accounts/login/")
+          page.open()
+          randomlogin = str(time.time()) + "@mail.ru"
+          randompassword = str(time.time())
+          page.register_new_user(randomlogin, randompassword)
+          page.should_be_authorized_user()
+     def test_product_page_user(self, browser):
+          page = ProductPage(browser, "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0")
+          page.open()
+          page.add_to_cart()
+          page.solve_quiz_and_get_code()
+          page.check_alert_message()
+          page.check_cart_price()
+
+     def test_user_cant_see_success_message (self, browser): 
+          page = ProductPage(browser, "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer0")
+          page.open()
+          page.is_not_element_present(*ProductPageLocators.ADDED_TO_CART_PRODUCT)
